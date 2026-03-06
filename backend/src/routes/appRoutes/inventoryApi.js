@@ -11,13 +11,21 @@ router.get('/inventory', async (req, res) => {
         if (!inventory) {
             inventory = await Inventory.create({
                 steel: 0,
+                steelPrice: 60,
                 alloy: 0,
+                alloyPrice: 120,
                 rubber: 0,
+                rubberPrice: 150,
                 glass: 0,
+                glassPrice: 40,
                 fibre: 0,
+                fibrePrice: 200,
                 assemblyKits: 0,
+                assemblyKitsPrice: 50,
                 fluidKits: 0,
+                fluidKitsPrice: 180,
                 paint: 0,
+                paintPrice: 250,
             });
         }
         return res.status(200).json({
@@ -41,13 +49,21 @@ router.patch('/inventory/update', async (req, res) => {
         if (!inventory) {
             inventory = await Inventory.create({
                 steel: 0,
+                steelPrice: 60,
                 alloy: 0,
+                alloyPrice: 120,
                 rubber: 0,
+                rubberPrice: 150,
                 glass: 0,
+                glassPrice: 40,
                 fibre: 0,
+                fibrePrice: 200,
                 assemblyKits: 0,
+                assemblyKitsPrice: 50,
                 fluidKits: 0,
+                fluidKitsPrice: 180,
                 paint: 0,
+                paintPrice: 250,
             });
         }
 
