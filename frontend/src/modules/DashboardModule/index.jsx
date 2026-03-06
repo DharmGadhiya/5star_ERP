@@ -6,6 +6,11 @@ import request from '@/request/request';
 import { useSelector } from 'react-redux';
 import { selectAuth } from '@/redux/auth/selectors';
 
+import VehicleSalesGraph from '@/components/Chart/VehicleSalesGraph';
+import InventoryGraph from '@/components/Chart/InventoryGraph';
+import RevenueProfitGraph from '@/components/Chart/RevenueProfitGraph';
+import EmployeeProductivityGraph from '@/components/Chart/EmployeeProductivityGraph';
+
 export default function DashboardModule() {
   const translate = useLanguage();
   const { current } = useSelector(selectAuth);
@@ -21,6 +26,12 @@ export default function DashboardModule() {
     totalRevenue: 0,
     totalExpenses: 0,
     totalProfit: 0,
+    chartData: {
+      vehicleSales: [],
+      inventory: [],
+      monthlyRevenue: [],
+      employees: []
+    }
   });
 
   const [loading, setLoading] = useState(true);
@@ -137,6 +148,26 @@ export default function DashboardModule() {
             );
           })}
         </Row>
+
+        {['owner', 'admin', 'finance'].includes(role) && (
+          <div style={{ marginTop: 40 }}>
+            <h3 style={{ marginBottom: 24 }}>Analytics & Reports</h3>
+            <Row gutter={[24, 24]}>
+              <Col xs={24} md={12}>
+                <VehicleSalesGraph data={data.chartData.vehicleSales} />
+              </Col>
+              <Col xs={24} md={12}>
+                <InventoryGraph data={data.chartData.inventory} />
+              </Col>
+              <Col xs={24} md={12}>
+                <RevenueProfitGraph data={data.chartData.monthlyRevenue} />
+              </Col>
+              <Col xs={24} md={12}>
+                <EmployeeProductivityGraph data={data.chartData.employees} />
+              </Col>
+            </Row>
+          </div>
+        )}
       </Spin>
     </div>
   );

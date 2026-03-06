@@ -42,6 +42,48 @@ router.get('/dashboard/summary', async (req, res) => {
         // 9. Total Profit
         const totalProfit = totalRevenue * 0.20;
 
+        // --- CHART DATA GENERATION --- //
+
+        // 1. Vehicle Sales Data
+        const salesDataArray = await SalesOrder.aggregate([
+            { $match: { removed: false } },
+            { $unwind: "$products" },
+            { $group: { _id: "$products.productName", totalQuantity: { $sum: "$products.quantity" } } }
+        ]);
+
+        // 2. Inventory Stock Data
+        let inventoryData = [];
+        if (inventory) {
+            const mats = ['steel', 'alloy', 'rubber', 'glass', 'fibre', 'assemblyKits', 'fluidKits', 'paint'];
+            inventoryData = mats.map(mat => ({
+                material: mat.charAt(0).toUpperCase() + mat.slice(1),
+                quantity: inventory[mat] || 0
+            }));
+        }
+
+        // 3. Revenue vs Profit Data (Group by month from AppInvoice)
+        const revenueByMonth = await AppInvoice.aggregate([
+            { $match: { removed: false } },
+            {
+                $group: {
+                    _id: { $month: "$created" },
+                    revenue: { $sum: "$grandTotal" }
+                }
+            },
+            { $sort: { "_id": 1 } }
+        ]);
+
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const monthlyRevenue = revenueByMonth.map(m => ({
+            month: monthNames[m._id - 1] || "Unknown",
+            revenue: m.revenue,
+            profit: m.revenue * 0.20
+        }));
+
+        // 4. Employee Productivity (HR Module Distribution)
+        const HrModule = mongoose.model('HrModule');
+        const hrData = await HrModule.find({ removed: false }, { employeeType: 1, numberOfEmployees: 1 });
+
         return res.status(200).json({
             success: true,
             result: {
@@ -53,7 +95,13 @@ router.get('/dashboard/summary', async (req, res) => {
                 totalInvoices,
                 totalRevenue,
                 totalExpenses,
-                totalProfit
+                totalProfit,
+                chartData: {
+                    vehicleSales: salesDataArray,
+                    inventory: inventoryData,
+                    monthlyRevenue: monthlyRevenue,
+                    employees: hrData
+                }
             },
             message: 'Dashboard metrics calculated successfully',
         });
