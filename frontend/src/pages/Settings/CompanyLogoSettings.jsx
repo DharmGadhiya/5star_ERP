@@ -13,7 +13,7 @@ export default function AppSettings() {
     ADD_NEW_ENTITY: translate('add_new_settings'),
     ENTITY_NAME: translate('settings'),
 
-    SETTINGS_TITLE: translate('General Settings'),
+    SETTINGS_TITLE: translate('Company Logo'),
   };
 
   const configPage = {
