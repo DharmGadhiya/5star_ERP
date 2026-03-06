@@ -10,6 +10,13 @@ import LoginForm from '@/forms/LoginForm';
 import Loading from '@/components/Loading';
 import AuthModule from '@/modules/AuthModule';
 
+import VantaBackground from '@/components/Home/VantaBackground';
+import Hero from '@/components/Home/Hero';
+import LoginCards from '@/components/Home/LoginCards';
+import About from '@/components/Home/About';
+import Footer from '@/components/Home/Footer';
+import '@/style/home.css';
+
 const { Title } = Typography;
 
 const LoginPage = () => {
@@ -28,48 +35,23 @@ const LoginPage = () => {
     if (isSuccess) navigate('/');
   }, [isSuccess]);
 
-  const RoleSelection = () => (
-    <div style={{ textAlign: 'center', padding: '20px' }}>
-      <Title level={3} style={{ marginBottom: 30 }}>Select Your Role</Title>
-      <Space direction="vertical" size="large" style={{ width: '100%' }}>
-        <Button
-          type="primary"
-          size="large"
-          block
-          icon={<SettingOutlined />}
-          style={{ height: 60, fontSize: '18px' }}
-          onClick={() => setSelectedRole('admin')}
-        >
-          Login as Admin
-        </Button>
-        <Button
-          type="default"
-          size="large"
-          block
-          icon={<UserOutlined />}
-          style={{ height: 60, fontSize: '18px', backgroundColor: '#f0f5ff', borderColor: '#adc6ff', color: '#1d39c4' }}
-          onClick={() => setSelectedRole('product')}
-        >
-          Login as Product Person
-        </Button>
-        <Button
-          type="default"
-          size="large"
-          block
-          icon={<BankOutlined />}
-          style={{ height: 60, fontSize: '18px', backgroundColor: '#f6ffed', borderColor: '#b7eb8f', color: '#389e0d' }}
-          onClick={() => setSelectedRole('finance')}
-        >
-          Login as Finance Person
-        </Button>
-      </Space>
+  const HomeDesign = () => (
+    <div className="home-design-root" style={{ color: '#ffffff', minHeight: '100vh', fontFamily: 'var(--font-primary)' }}>
+      <div style={{ position: 'fixed', width: '100vw', height: '100vh', zIndex: -1 }}>
+        <VantaBackground />
+      </div>
+      <main style={{ position: 'relative', zIndex: 1 }}>
+        <Hero />
+        <LoginCards onRoleSelect={(role) => setSelectedRole(role)} />
+        <About />
+        <Footer />
+      </main>
     </div>
   );
 
   const FormContainer = () => {
     let defaultEmail = '';
     if (selectedRole === 'admin') defaultEmail = 'admin@admin.com';
-    // Let custom users type their emails if they are product/finance
 
     return (
       <Loading isLoading={isLoading}>
@@ -79,7 +61,7 @@ const LoginPage = () => {
           onClick={() => setSelectedRole(null)}
           style={{ marginBottom: 20, padding: 0 }}
         >
-          Back to Role Selection
+          Back to Home
         </Button>
         <Form
           layout="vertical"
@@ -110,10 +92,10 @@ const LoginPage = () => {
     );
   };
 
-  return (
+  return !selectedRole ? <HomeDesign /> : (
     <AuthModule
-      authContent={!selectedRole ? <RoleSelection /> : <FormContainer />}
-      AUTH_TITLE={!selectedRole ? "Welcome" : `Sign in as ${selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}`}
+      authContent={<FormContainer />}
+      AUTH_TITLE={`Sign in as ${selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}`}
     />
   );
 };

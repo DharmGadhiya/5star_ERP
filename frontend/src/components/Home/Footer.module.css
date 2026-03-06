@@ -1,0 +1,42 @@
+/* ═══════════════════════════════════════════════════════
+   Footer — Minimal premium footer
+   ═══════════════════════════════════════════════════════ */
+
+.footer {
+    position: relative;
+    z-index: 1;
+    padding: 60px 24px 40px;
+    text-align: center;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.footer__brand {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+}
+
+.footer__copy {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 300;
+}
+
+.footer__links {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 20px;
+}
+
+.footer__link {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    transition: color var(--transition-fast);
+}
+
+.footer__link:hover {
+    color: var(--accent);
+}
