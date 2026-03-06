@@ -11,6 +11,7 @@ router.get('/quotes/customers', async (req, res) => {
             { removed: false, 'purchases.0': { $exists: true } },
             { customerId: 1, name: 1, purchases: 1, lastQuoteId: 1, lastInquiryNo: 1 }
         )
+            .populate('purchases.product', 'name price')
             .sort({ customerId: 1 })
             .lean();
 
