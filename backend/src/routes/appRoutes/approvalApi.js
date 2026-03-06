@@ -44,7 +44,7 @@ router.post('/quotes/approve/:quoteId', async (req, res) => {
             fibre: 0, assemblyKits: 0, fluidKits: 0, paint: 0
         };
 
-        let maxBaseDuration = 0;
+        let totalBaseDuration = 0;
         const soProducts = [];
 
         // Process each product in the quote
@@ -57,10 +57,8 @@ router.post('/quotes/approve/:quoteId', async (req, res) => {
                         quantity: purchase.quantity
                     });
 
-                    // Track longest duration
-                    if (product.duration > maxBaseDuration) {
-                        maxBaseDuration = product.duration;
-                    }
+                    // Accumulate total duration based on quantity
+                    totalBaseDuration += (product.duration * purchase.quantity);
 
                     // Accumulate material requirements
                     if (product.materials) {
@@ -122,7 +120,7 @@ router.post('/quotes/approve/:quoteId', async (req, res) => {
         }
 
         // 5. Generate Sales Order
-        const deliveryTime = needPurchaseOrder ? maxBaseDuration + 2 : maxBaseDuration;
+        const deliveryTime = needPurchaseOrder ? totalBaseDuration + 2 : totalBaseDuration;
 
         const lastSO = await SalesOrder.findOne({}, { salesId: 1 }).sort({ salesId: -1 }).lean();
         const nextSalesId = lastSO && lastSO.salesId ? lastSO.salesId + 1 : 1;

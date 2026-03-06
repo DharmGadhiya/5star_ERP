@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Spin, Space, Button, Modal } from 'antd';
-import { EyeOutlined } from '@ant-design/icons';
+import { EyeOutlined, DownloadOutlined } from '@ant-design/icons';
 import request from '@/request/request';
 import useLanguage from '@/locale/useLanguage';
 import dayjs from 'dayjs';
@@ -29,6 +29,30 @@ export default function SalesOrder() {
     const showDetails = (record) => {
         setSelectedSO(record);
         setDetailModalOpen(true);
+    };
+
+    const handleDownload = (record) => {
+        let content = `Sales Order ID: ${record.salesId}\n`;
+        content += `Customer ID: ${record.customerId}\n`;
+        content += `Quote ID: ${record.quoteId}\n`;
+        content += `Created: ${dayjs(record.created).format('YYYY-MM-DD HH:mm')}\n\n`;
+        content += `Product Name\t\tQuantity\n`;
+        content += `-------------------------------------------------------\n`;
+        record.products.forEach((item) => {
+            content += `${item.productName}\t\t${item.quantity}\n`;
+        });
+        content += `-------------------------------------------------------\n`;
+        content += `\nDelivery Time: ${record.deliveryTime} Days\n`;
+
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `SalesOrder_${record.salesId}.txt`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
     };
 
     const columns = [
@@ -62,13 +86,22 @@ export default function SalesOrder() {
             title: 'Details',
             key: 'action',
             render: (_, record) => (
-                <Button
-                    size="small"
-                    icon={<EyeOutlined />}
-                    onClick={() => showDetails(record)}
-                >
-                    View Products
-                </Button>
+                <Space>
+                    <Button
+                        size="small"
+                        icon={<EyeOutlined />}
+                        onClick={() => showDetails(record)}
+                    >
+                        View Products
+                    </Button>
+                    <Button
+                        size="small"
+                        icon={<DownloadOutlined />}
+                        onClick={() => handleDownload(record)}
+                    >
+                        Download
+                    </Button>
+                </Space>
             ),
         },
     ];

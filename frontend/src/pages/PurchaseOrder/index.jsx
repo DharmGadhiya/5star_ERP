@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Spin, Tag, Switch, Space, message, Modal } from 'antd';
-import { CheckCircleOutlined, HistoryOutlined, EyeOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, HistoryOutlined, EyeOutlined, DownloadOutlined } from '@ant-design/icons';
 import request from '@/request/request';
 import useLanguage from '@/locale/useLanguage';
 import dayjs from 'dayjs';
@@ -50,6 +50,31 @@ export default function PurchaseOrder() {
         setDetailModalOpen(true);
     };
 
+    const handleDownload = (record) => {
+        let content = `Purchase Order ID: ${record.purchaseId}\n`;
+        content += `Quote ID: ${record.quoteId}\n`;
+        content += `Status: ${record.status}\n`;
+        content += `Created: ${dayjs(record.created).format('YYYY-MM-DD HH:mm')}\n\n`;
+        content += `Material\t\tQuantity\tUnit Price\tTotal Price\n`;
+        content += `-------------------------------------------------------\n`;
+        record.items.forEach((item) => {
+            const matName = item.material.charAt(0).toUpperCase() + item.material.slice(1);
+            content += `${matName}\t\t${item.quantity}\t\t${item.price}\t\t${item.totalPrice}\n`;
+        });
+        content += `-------------------------------------------------------\n`;
+        content += `\nGrand Total: ₹${record.grandTotal}\n`;
+
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `PurchaseOrder_${record.purchaseId}.txt`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
     const columns = [
         {
             title: 'Purchase ID',
@@ -92,6 +117,13 @@ export default function PurchaseOrder() {
                         onClick={() => showDetails(record)}
                     >
                         Details
+                    </Button>
+                    <Button
+                        size="small"
+                        icon={<DownloadOutlined />}
+                        onClick={() => handleDownload(record)}
+                    >
+                        Download
                     </Button>
                     {!viewHistory && (
                         <Button
