@@ -1,0 +1,55 @@
+/* Custom Ant Design overrides for the Sign In Page */
+
+/* All text inside the login card (titles, labels, links, checkbox) */
+.login-custom-theme label,
+.login-custom-theme .ant-typography,
+.login-custom-theme .ant-checkbox-wrapper,
+.login-custom-theme a {
+    color: #f0ae77 !important;
+}
+
+.login-custom-theme .ant-divider {
+    border-top-color: #f0ae77 !important;
+}
+
+/* Input Fields Background and Color */
+.login-custom-theme .ant-input,
+.login-custom-theme .ant-input-password,
+.login-custom-theme .ant-input-affix-wrapper {
+    background-color: #f0ae77 !important;
+    color: black !important;
+    border-color: #f0ae77 !important;
+}
+
+/* Ensure inner inputs inside wrapper use transparent background to prevent clipping */
+.login-custom-theme .ant-input-affix-wrapper>input.ant-input {
+    background-color: transparent !important;
+    color: rgb(0, 0, 0) !important;
+}
+
+/* Input placeholder text */
+.login-custom-theme .ant-input::placeholder,
+.login-custom-theme .ant-input-affix-wrapper>input::placeholder {
+    color: rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Input Icons (like the lock and user icon) */
+.login-custom-theme .anticon {
+    color: black !important;
+}
+
+/* Submit Button */
+.login-custom-theme .ant-btn-primary {
+    background-color: #f0ae77 !important;
+    border-color: #f0ae77 !important;
+    color: black !important;
+    font-weight: bold;
+}
+
+.login-custom-theme .ant-btn-primary:hover,
+.login-custom-theme .ant-btn-primary:focus {
+    background-color: #8d6747 !important;
+    border-color: black !important;
+    color: black !important;
+    opacity: 0.9;
+}

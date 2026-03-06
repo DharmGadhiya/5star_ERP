@@ -3,6 +3,8 @@ import { Layout, Typography, Divider } from 'antd';
 import AuthLayout from '@/layout/AuthLayout';
 import useLanguage from '@/locale/useLanguage';
 
+import '@/style/loginCustom.css';
+
 const { Content } = Layout;
 const { Title } = Typography;
 
@@ -11,6 +13,7 @@ const AuthModule = ({ authContent, AUTH_TITLE }) => {
   return (
     <AuthLayout>
       <Content
+        className="login-custom-theme"
         style={{
           padding: '40px 30px 30px',
           maxWidth: '430px',

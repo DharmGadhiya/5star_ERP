@@ -12,17 +12,18 @@ export default function AuthLayout({ children }) {
         mouseControls: true,
         touchControls: true,
         gyroControls: false,
-        minHeight: 200.00,
-        minWidth: 200.00,
-        scale: 1.00,
-        scaleMobile: 1.00,   
-        color: 0x8cac,
-        backgroundColor: 0x7071d,
-        points: 18.00,
-        maxDistance: 18.00,
-        spacing: 12.00
+        minHeight: 200.0,
+        minWidth: 200.0,
+        scale: 1.0,
+        scaleMobile: 1.0,
+        color:0xcc7d37,
+        backgroundColor: 0x0000,
+        points: 4.0,
+        maxDistance: 26.0,
+        spacing: 15.0,
       });
     }
+
     return () => {
       if (vantaEffect.current) vantaEffect.current.destroy();
     };
@@ -33,29 +34,47 @@ export default function AuthLayout({ children }) {
       style={{
         minHeight: '100vh',
         position: 'relative',
-        overflow: 'hidden',
+        width:'100%',
+        overflow: 'hidden', // BACKGROUND (lowest layer)
+        
       }}
     >
-      {/* Vanta Animation Background directly covering the entire screen behind content */}
-      <div 
-        id="vanta-bg"
-        ref={vantaRef} 
-        style={{ 
-          position: 'absolute', 
-          top: 0, 
-          left: 0, 
-          right: 0, 
-          bottom: 0, 
-          zIndex: 0 
-        }} 
+      {/* Vanta Animation */}
+      <div
+        ref={vantaRef}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '60%',
+          bottom:0,
+          height: '100%',
+          zIndex: 1, // middle layer
+        }}
       />
 
-      {/* Main Grid Content positioned layered above */}
-      <Row style={{ minHeight: '100vh', width: '100%', position: 'relative', zIndex: 10 }}>
-        {/* Left Spacing/Background Section */}
-        <Col xs={0} sm={0} md={12} lg={12}></Col>
+      {/* Page Content */}
+      <Row
+        style={{
+          minHeight: '100vh',
+          width: '100%',
+          position: 'relative', // top layer
+          backgroundColor:'#000000',
+        }}
+      >
+        {/* Left Side */}
+        <Col
+          xs={0}
+          sm={0}
+          md={12}
+          lg={12}
+          style={{
+            backgroundColor: '#0A0F2C',
+            
+          }}
+        ></Col>
 
-        {/* Right Section containing the Form */}
+        {/* Right Side (Login Form) */}
         <Col
           xs={24}
           sm={24}
@@ -70,13 +89,20 @@ export default function AuthLayout({ children }) {
         >
           <div
             style={{
-              background: '#c4e8f6ff',
-              width: '100%',
-              maxWidth: '450px',
-              borderRadius: '8px',
-              boxShadow: '0 0 12px rgba(255,255,255,0.8)',
-              height:'67%',
-            }}
+  background: '#352f2bff',
+  width: '100%',
+  maxWidth: '450px',
+  borderRadius: '8px',
+  boxShadow: '0 0 16px rgba(94, 93, 91, 0.9)',
+  height: '67%',
+  zIndex: 20,
+  position: 'relative',
+  left: '70px',
+  paddingLeft: '20px',
+  // opacity:0.7,
+  
+  color: '#f0ae77'   // 👈 TEXT COLOR
+}}
           >
             {children}
           </div>
