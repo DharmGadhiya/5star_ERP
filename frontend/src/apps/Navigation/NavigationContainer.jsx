@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Drawer, Layout, Menu } from 'antd';
 
 import { useAppContext } from '@/context/appContext';
+import { useSelector } from 'react-redux';
+import { selectAuth } from '@/redux/auth/selectors';
 
 import useLanguage from '@/locale/useLanguage';
 import logoIcon from '@/style/images/logo-icon.svg';
@@ -28,6 +30,7 @@ import {
   ReconciliationOutlined,
   ShoppingCartOutlined,
   CarOutlined,
+  UnlockOutlined,
 } from '@ant-design/icons';
 
 const { Sider } = Layout;
@@ -50,7 +53,20 @@ function Sidebar({ collapsible, isMobile = false }) {
   const translate = useLanguage();
   const navigate = useNavigate();
 
-  const items = [
+  const { current } = useSelector(selectAuth);
+  const role = current?.role || 'owner';
+
+  const allItems = [
+    {
+      key: 'credential-manager',
+      icon: <UnlockOutlined />,
+      label: <Link to={'/credential-manager'}>Credential Manager</Link>,
+    },
+    {
+      key: 'hr-module',
+      icon: <UserOutlined />,
+      label: <Link to={'/hr-module'}>HR Module</Link>,
+    },
     {
       key: 'dashboard',
       icon: <DashboardOutlined />,
@@ -61,7 +77,6 @@ function Sidebar({ collapsible, isMobile = false }) {
       icon: <CustomerServiceOutlined />,
       label: <Link to={'/customer'}>{translate('customer_master') || 'Customer Master'}</Link>,
     },
-
     {
       key: 'invoice',
       icon: <ContainerOutlined />,
@@ -103,6 +118,16 @@ function Sidebar({ collapsible, isMobile = false }) {
       icon: <ReconciliationOutlined />,
     },
   ];
+
+  let items = [];
+  if (role === 'product') {
+    items = allItems.filter(item => ['customer', 'quote', 'purchase_order', 'sales_order', 'inventory', 'product_master'].includes(item.key));
+  } else if (role === 'finance') {
+    items = allItems.filter(item => ['customer', 'product_master', 'invoice', 'hr-module'].includes(item.key));
+  } else {
+    // Owner / Admin -> gets everything
+    items = allItems;
+  }
 
   useEffect(() => {
     if (location)

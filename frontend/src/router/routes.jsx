@@ -28,6 +28,8 @@ const PaymentMode = lazy(() => import('@/pages/PaymentMode'));
 const Taxes = lazy(() => import('@/pages/Taxes'));
 const ProductMaster = lazy(() => import('@/pages/ProductMaster'));
 const Inventory = lazy(() => import('@/pages/Inventory'));
+const HrModule = lazy(() => import('@/pages/HrModule'));
+const CredentialManager = lazy(() => import('@/pages/CredentialManager'));
 
 const Profile = lazy(() => import('@/pages/Profile'));
 
@@ -138,7 +140,14 @@ let routes = {
       path: '/inventory',
       element: <Inventory />,
     },
-
+    {
+      path: '/hr-module',
+      element: <HrModule />,
+    },
+    {
+      path: '/credential-manager',
+      element: <CredentialManager />,
+    },
     {
       path: '/profile',
       element: <Profile />,
