@@ -12,7 +12,7 @@ import { FILE_BASE_URL } from '@/config/serverApiConfig';
 
 import useLanguage from '@/locale/useLanguage';
 
-import UpgradeButton from './UpgradeButton';
+import personPic from '@/style/images/person_pic.jpg';
 
 export default function HeaderContent() {
   const currentAdmin = useSelector(selectCurrentAdmin);
@@ -27,14 +27,14 @@ export default function HeaderContent() {
         <Avatar
           size="large"
           className="last"
-          src={currentAdmin?.photo ? FILE_BASE_URL + currentAdmin?.photo : undefined}
+          src={currentAdmin?.photo ? FILE_BASE_URL + currentAdmin?.photo : personPic}
           style={{
             color: '#f56a00',
             backgroundColor: currentAdmin?.photo ? 'none' : '#fde3cf',
             boxShadow: 'rgba(150, 190, 238, 0.35) 0px 0px 6px 1px',
           }}
         >
-          {currentAdmin?.name?.charAt(0)?.toUpperCase()}
+          {currentAdmin?.name ? currentAdmin.name.charAt(0).toUpperCase() : ''}
         </Avatar>
         <div className="profileDropdownInfo">
           <p>
@@ -106,7 +106,7 @@ export default function HeaderContent() {
         {/* <Badge dot> */}
         <Avatar
           className="last"
-          src={currentAdmin?.photo ? FILE_BASE_URL + currentAdmin?.photo : undefined}
+          src={currentAdmin?.photo ? FILE_BASE_URL + currentAdmin?.photo : personPic}
           style={{
             color: '#f56a00',
             backgroundColor: currentAdmin?.photo ? 'none' : '#fde3cf',
@@ -116,14 +116,13 @@ export default function HeaderContent() {
           }}
           size="large"
         >
-          {currentAdmin?.name?.charAt(0)?.toUpperCase()}
+          {currentAdmin?.name ? currentAdmin.name.charAt(0).toUpperCase() : ''}
         </Avatar>
         {/* </Badge> */}
       </Dropdown>
 
       {/* <AppsButton /> */}
 
-      <UpgradeButton />
     </Header>
   );
 }
