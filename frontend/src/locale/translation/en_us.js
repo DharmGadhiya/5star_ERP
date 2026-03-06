@@ -452,6 +452,8 @@ const lang = {
   search: 'search',
   product_master: 'Product Master',
   inventory: 'Inventory',
+  customer_master: 'Customer Master',
+  customer_master_list: 'Customer Master List',
 };
 
 export default lang;

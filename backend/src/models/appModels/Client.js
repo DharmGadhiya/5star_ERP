@@ -10,6 +10,10 @@ const schema = new mongoose.Schema({
     default: true,
   },
 
+  customerId: {
+    type: Number,
+    unique: true,
+  },
   name: {
     type: String,
     required: true,
@@ -18,6 +22,23 @@ const schema = new mongoose.Schema({
   country: String,
   address: String,
   email: String,
+  lastInquiryNo: {
+    type: Number,
+    default: 0,
+  },
+  lastQuoteId: {
+    type: Number,
+    default: 0,
+  },
+  purchases: [
+    {
+      product: { type: mongoose.Schema.ObjectId, ref: 'Product' },
+      productName: String,
+      quantity: { type: Number, default: 1 },
+      inquiryNo: String,
+      quoteId: String,
+    },
+  ],
   createdBy: { type: mongoose.Schema.ObjectId, ref: 'Admin' },
   assigned: { type: mongoose.Schema.ObjectId, ref: 'Admin' },
   created: {

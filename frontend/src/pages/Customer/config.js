@@ -1,4 +1,10 @@
 export const fields = {
+  customerId: {
+    type: 'number',
+    label: 'Customer ID',
+    disableForForm: true,
+    disableForUpdate: true,
+  },
   name: {
     type: 'string',
   },
@@ -14,5 +20,17 @@ export const fields = {
   },
   email: {
     type: 'email',
+  },
+  lastInquiryNo: {
+    type: 'number',
+    disableForTable: true,
+    disableForForm: true,
+    disableForUpdate: true,
+  },
+  lastQuoteId: {
+    type: 'number',
+    disableForTable: true,
+    disableForForm: true,
+    disableForUpdate: true,
   },
 };
