@@ -16,6 +16,7 @@ import LoginCards from '@/components/Home/LoginCards';
 import About from '@/components/Home/About';
 import Footer from '@/components/Home/Footer';
 import '@/style/home.css';
+import '@/style/partials/auth-custom.css';
 
 const { Title } = Typography;
 
@@ -60,13 +61,14 @@ const LoginPage = () => {
           icon={<ArrowLeftOutlined />}
           onClick={() => setSelectedRole(null)}
           style={{ marginBottom: 20, padding: 0 }}
+          className="custom-back-btn"
         >
           Back to Home
         </Button>
         <Form
           layout="vertical"
           name="normal_login"
-          className="login-form"
+          className="login-form custom-auth-form"
           initialValues={{
             remember: true,
             email: defaultEmail,
@@ -79,7 +81,7 @@ const LoginPage = () => {
             <Button
               type="primary"
               htmlType="submit"
-              className="login-form-button"
+              className="login-form-button custom-auth-button"
               loading={isLoading}
               size="large"
               block
@@ -95,7 +97,7 @@ const LoginPage = () => {
   return !selectedRole ? <HomeDesign /> : (
     <AuthModule
       authContent={<FormContainer />}
-      AUTH_TITLE={`Sign in as ${selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}`}
+      AUTH_TITLE="Sign In"
     />
   );
 };

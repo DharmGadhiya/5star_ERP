@@ -3,7 +3,6 @@ import useLanguage from '@/locale/useLanguage';
 import { Layout, Col, Divider, Typography } from 'antd';
 
 import AuthLayout from '@/layout/AuthLayout';
-import SideContent from './SideContent';
 
 import logo from '@/style/images/custom-logo.png';
 
@@ -13,11 +12,11 @@ const { Title } = Typography;
 const AuthModule = ({ authContent, AUTH_TITLE, isForRegistre = false }) => {
   const translate = useLanguage();
   return (
-    <AuthLayout sideContent={<SideContent />}>
+    <AuthLayout>
       <Content
         style={{
-          padding: isForRegistre ? '40px 30px 30px' : '100px 30px 30px',
-          maxWidth: '440px',
+          padding: '0',
+          width: '100%',
           margin: '0 auto',
         }}
       >
@@ -34,9 +33,9 @@ const AuthModule = ({ authContent, AUTH_TITLE, isForRegistre = false }) => {
           />
           <div className="space10" />
         </Col>
-        <Title level={1}>{translate(AUTH_TITLE)}</Title>
+        <Title level={1} style={{ textAlign: 'center', color: '#f0ae77', fontWeight: 600 }}>{translate(AUTH_TITLE)}</Title>
 
-        <Divider />
+        <Divider style={{ borderColor: 'rgba(240, 174, 119, 0.5)' }} />
         <div className="site-layout-content">{authContent}</div>
       </Content>
     </AuthLayout>

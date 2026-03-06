@@ -1,0 +1,95 @@
+/* Custom Auth Form Styles matching the provided design */
+
+/* Style the form labels to be peach/orange (#f0ae77) */
+.custom-auth-form .ant-form-item-label>label {
+    color: #f2b583 !important;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+/* Style the required asterisk specifically to match the design (often red/peach) */
+.custom-auth-form .ant-form-item-label>label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+    color: #f0ae77 !important;
+    font-weight: bold;
+}
+
+/* Style the Input boxes */
+.custom-auth-form .ant-input-affix-wrapper,
+.custom-auth-form .ant-input,
+.custom-auth-form .ant-input-password {
+    background-color: #f0ae77 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    /* The image shows square/sharp corners for the inputs */
+}
+
+/* Style the icon inside the input */
+.custom-auth-form .ant-input-prefix .anticon {
+    color: #000000 !important;
+    /* Black icon */
+    font-size: 18px;
+}
+
+/* Style the text and placeholder inside the input */
+.custom-auth-form .ant-input::placeholder {
+    color: rgba(0, 0, 0, 0.6) !important;
+    font-weight: 500;
+}
+
+.custom-auth-form .ant-input {
+    color: #000000 !important;
+    font-weight: 600;
+}
+
+/* Checkbox styling */
+.custom-auth-form .ant-checkbox-wrapper {
+    color: #f0ae77 !important;
+    font-weight: 500;
+}
+
+.custom-auth-form .ant-checkbox-inner {
+    background-color: transparent !important;
+    border-color: #f0ae77 !important;
+}
+
+.custom-auth-form .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #f0ae77 !important;
+    border-color: #f0ae77 !important;
+}
+
+/* Forgot Password Link styling */
+.custom-auth-form .login-form-forgot {
+    color: #f0ae77 !important;
+    font-weight: 500;
+    float: right;
+}
+
+.custom-auth-form .login-form-forgot:hover {
+    text-decoration: underline;
+    color: #f0ae77 !important;
+}
+
+/* The Log In Button */
+.custom-auth-button {
+    background-color: #f0ae77 !important;
+    border: none !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    border-radius: 0 !important;
+    /* Sharp corners */
+    height: 45px !important;
+}
+
+.custom-auth-button:hover,
+.custom-auth-button:focus,
+.custom-auth-button:active {
+    background-color: #df985c !important;
+    /* slightly darker on hover */
+    color: #000000 !important;
+}
+
+/* Eye icon for password */
+.custom-auth-form .ant-input-suffix .anticon {
+    color: #000000 !important;
+}
