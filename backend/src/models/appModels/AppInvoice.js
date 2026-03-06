@@ -29,8 +29,14 @@ const schema = new mongoose.Schema({
         {
             productName: String,
             quantity: Number,
+            price: Number,
+            total: Number,
         },
     ],
+    grandTotal: {
+        type: Number,
+        default: 0,
+    },
     created: {
         type: Date,
         default: Date.now,

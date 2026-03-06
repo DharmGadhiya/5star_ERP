@@ -49,15 +49,31 @@ router.post('/sales-orders/:id/produce', async (req, res) => {
             fibre: 0, assemblyKits: 0, fluidKits: 0, paint: 0
         };
 
+        let invoiceProducts = [];
+        let grandTotal = 0;
+
         for (const item of salesOrder.products) {
             const productDoc = await Product.findOne({ name: item.productName });
-            if (productDoc && productDoc.materials) {
+
+            let price = 0;
+            if (productDoc) {
+                price = productDoc.price || 0;
                 for (const mat of Object.keys(requiredMaterials)) {
                     if (productDoc.materials[mat]) {
                         requiredMaterials[mat] += (productDoc.materials[mat] * item.quantity);
                     }
                 }
             }
+
+            const itemTotal = price * item.quantity;
+            grandTotal += itemTotal;
+
+            invoiceProducts.push({
+                productName: item.productName,
+                quantity: item.quantity,
+                price: price,
+                total: itemTotal
+            });
         }
 
         for (const mat of Object.keys(requiredMaterials)) {
@@ -83,7 +99,8 @@ router.post('/sales-orders/:id/produce', async (req, res) => {
             quoteId: salesOrder.quoteId,
             customerId: salesOrder.customerId,
             deliveryTime: salesOrder.deliveryTime,
-            products: salesOrder.products
+            products: invoiceProducts,
+            grandTotal: grandTotal
         });
 
         // Mark SalesOrder as produced

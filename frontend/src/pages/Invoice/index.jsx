@@ -38,13 +38,19 @@ export default function Invoice() {
     content += `Created: ${dayjs(record.created).format('YYYY-MM-DD HH:mm')}\n\n`;
 
     content += `-------------------------------------------------------\n`;
-    content += `Product Name\t\tQuantity\n`;
+    content += `Product Name\t\tPrice\t\tQuantity\tTotal\n`;
     content += `-------------------------------------------------------\n`;
 
+    let fallbackGrandTotal = 0;
     (record.products || []).forEach((item) => {
-      content += `${item.productName}\t\t${item.quantity}\n`;
+      const price = item.price || 0;
+      const total = item.total || (price * item.quantity);
+      fallbackGrandTotal += total;
+      content += `${item.productName}\t\t₹${price}\t\t${item.quantity}\t\t₹${total}\n`;
     });
 
+    content += `-------------------------------------------------------\n`;
+    content += `Grand Total:\t\t\t\t\t₹${record.grandTotal || fallbackGrandTotal}\n`;
     content += `-------------------------------------------------------\n`;
     content += `\nDelivery Time: ${record.deliveryTime} Days\n`;
     content += `=======================================================\n`;

@@ -5,7 +5,7 @@ import CrudModule from '@/modules/CrudModule/CrudModule';
 
 export default function HrModule() {
     const translate = useLanguage();
-    const entity = 'hr-module';
+    const entity = 'hrmodule';
 
     const configPage = {
         entity,
@@ -15,17 +15,6 @@ export default function HrModule() {
             ENTITY_NAME: translate('Employee Record'),
             CREATE_ENTITY: translate('Create New Employee Record'),
             UPDATE_ENTITY: translate('Update Employee Record'),
-        },
-    };
-
-    const config = {
-        ...configPage,
-        fields: ['employeeType', 'numberOfEmployees', 'averageSalary'],
-        readColumns: ['employeeType', 'numberOfEmployees', 'averageSalary'],
-        searchConfig: {
-            displayLabels: ['employeeType'],
-            searchFields: 'employeeType',
-            outputValue: '_id',
         },
     };
 
@@ -41,9 +30,22 @@ export default function HrModule() {
         {
             title: translate('Average Monthly Salary (INR)'),
             dataIndex: 'averageSalary',
-            render: (val) => `₹${val}`,
+            render: (val) => `₹${val ? val : 0}`,
         },
     ];
+
+    const config = {
+        ...configPage,
+        readColumns: dataTableColumns,
+        dataTableColumns,
+        searchConfig: {
+            displayLabels: ['employeeType'],
+            searchFields: 'employeeType',
+            outputValue: '_id',
+        },
+        entityDisplayLabels: ['employeeType'],
+        deleteModalLabels: ['employeeType'],
+    };
 
     return (
         <CrudModule
