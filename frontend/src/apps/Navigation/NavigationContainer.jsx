@@ -87,6 +87,11 @@ function Sidebar({ collapsible, isMobile = false }) {
       icon: <ShopOutlined />,
     },
     {
+      key: 'product_master',
+      label: <Link to={'/product'}>{translate('product_master') || 'Product Master'}</Link>,
+      icon: <TagOutlined />,
+    },
+    {
       key: 'generalSettings',
       label: <Link to={'/settings'}>{translate('settings')}</Link>,
       icon: <SettingOutlined />,
