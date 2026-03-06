@@ -64,24 +64,7 @@ export const verify = async ({ userId, emailToken }) => {
   }
 };
 
-export const resetPassword = async ({ resetPasswordData }) => {
-  try {
-    const response = await axios.post(API_BASE_URL + `resetpassword`, resetPasswordData);
 
-    const { status, data } = response;
-
-    successHandler(
-      { data, status },
-      {
-        notifyOnSuccess: true,
-        notifyOnFailed: true,
-      }
-    );
-    return data;
-  } catch (error) {
-    return errorHandler(error);
-  }
-};
 export const logout = async () => {
   axios.defaults.withCredentials = true;
   try {

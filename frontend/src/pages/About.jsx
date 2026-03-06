@@ -3,17 +3,14 @@ import { Button, Result } from 'antd';
 import useLanguage from '@/locale/useLanguage';
 
 const About = () => {
-  const translate = useLanguage();
+  
   return (
     <Result
       status="info"
       title={'IDURAR'}
-      subTitle={translate('Do you need help on customize of this app')}
+      subTitle={'Do you need help on customize of this app'}
       extra={
         <>
-          <p>
-            Website : <a href="https://www.idurarapp.com">www.idurarapp.com</a>{' '}
-          </p>
           <p>
             GitHub :{' '}
             <a href="https://github.com/idurar/idurar-erp-crm">
@@ -26,7 +23,7 @@ const About = () => {
               window.open(`https://www.idurarapp.com/contact-us/`);
             }}
           >
-            {translate('Contact us')}
+            {'Contact us'}
           </Button>
         </>
       }

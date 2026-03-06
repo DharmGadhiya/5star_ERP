@@ -10,8 +10,5 @@ export default function AboutPage() {
       <p>Provides details about the company, the hackathon challenge, and the platform vision.</p>
       <button onClick={() => navigate('/')} style={{ marginTop: '20px' }}>Back to Home</button>
     </div>
-
-
-
   );
 }
