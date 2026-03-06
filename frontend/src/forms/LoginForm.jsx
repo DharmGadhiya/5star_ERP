@@ -25,6 +25,7 @@ export default function LoginForm() {
           placeholder={'admin@admin.com'}
           type="email"
           size="large"
+          style={{backgroundColor:'#ffffffff'}}
         />
       </Form.Item>
       <Form.Item

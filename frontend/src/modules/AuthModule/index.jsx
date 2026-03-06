@@ -13,11 +13,11 @@ const AuthModule = ({ authContent, AUTH_TITLE }) => {
       <Content
         style={{
           padding: '40px 30px 30px',
-          maxWidth: '440px',
+          maxWidth: '430px',
           margin: '0 auto',
         }}
       >
-        <Title level={1} style={{ textAlign: 'center', fontSize: '32px' }}>
+        <Title level={1} style={{ textAlign: 'center', fontSize: '33px' }}>
           {translate(AUTH_TITLE)}
         </Title>
         <Divider />
