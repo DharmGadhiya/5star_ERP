@@ -53,6 +53,7 @@ app.use('/api', adminAuth.isValidAuthToken, purchaseOrderApiRouter);
 app.use('/api', adminAuth.isValidAuthToken, salesOrderApiRouter);
 app.use('/api', adminAuth.isValidAuthToken, require('./routes/appRoutes/invoiceApi'));
 app.use('/api', adminAuth.isValidAuthToken, require('./routes/coreRoutes/credentialManagerApi'));
+app.use('/api', adminAuth.isValidAuthToken, require('./routes/appRoutes/dashboardApi'));
 app.use('/download', coreDownloadRouter);
 app.use('/public', corePublicRouter);
 
