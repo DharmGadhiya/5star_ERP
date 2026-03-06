@@ -27,6 +27,38 @@ export default function ProductMaster() {
             title: translate('Duration (in days)') || 'Duration (in days)',
             dataIndex: 'duration',
         },
+        {
+            title: translate('Steel') || 'Steel',
+            dataIndex: 'materials.steel',
+        },
+        {
+            title: translate('Alloy') || 'Alloy',
+            dataIndex: 'materials.alloy',
+        },
+        {
+            title: translate('Rubber') || 'Rubber',
+            dataIndex: 'materials.rubber',
+        },
+        {
+            title: translate('Glass') || 'Glass',
+            dataIndex: 'materials.glass',
+        },
+        {
+            title: translate('Fibre') || 'Fibre',
+            dataIndex: 'materials.fibre',
+        },
+        {
+            title: translate('Assembly Kits') || 'Assembly Kits',
+            dataIndex: 'materials.assemblyKits',
+        },
+        {
+            title: translate('Fluid Kits') || 'Fluid Kits',
+            dataIndex: 'materials.fluidKits',
+        },
+        {
+            title: translate('Paint') || 'Paint',
+            dataIndex: 'materials.paint',
+        },
     ];
 
     const dataTableColumns = [
