@@ -121,9 +121,9 @@ function Sidebar({ collapsible, isMobile = false }) {
 
   let items = [];
   if (role === 'product') {
-    items = allItems.filter(item => ['customer', 'quote', 'purchase_order', 'sales_order', 'inventory', 'product_master'].includes(item.key));
+    items = allItems.filter(item => ['dashboard', 'customer', 'quote', 'purchase_order', 'sales_order', 'inventory', 'product_master'].includes(item.key));
   } else if (role === 'finance') {
-    items = allItems.filter(item => ['customer', 'product_master', 'invoice', 'hr-module'].includes(item.key));
+    items = allItems.filter(item => ['dashboard', 'customer', 'product_master', 'invoice', 'hr-module'].includes(item.key));
   } else {
     // Owner / Admin -> gets everything
     items = allItems;
