@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Spin, Modal, Collapse, Tag } from 'antd';
+import { Table, Button, Spin, Modal, Collapse, Tag, Checkbox, message } from 'antd';
 import { EyeOutlined, DownloadOutlined } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
 import request from '@/request/request';
@@ -10,6 +10,7 @@ export default function Quote() {
   const [loading, setLoading] = useState(true);
   const [detailModalOpen, setDetailModalOpen] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [approvingQuotes, setApprovingQuotes] = useState({});
 
   const fetchCustomers = async () => {
     setLoading(true);
@@ -27,6 +28,29 @@ export default function Quote() {
   const handleShow = (record) => {
     setSelectedCustomer(record);
     setDetailModalOpen(true);
+  };
+
+  const handleApproveQuote = async (quoteId) => {
+    setApprovingQuotes((prev) => ({ ...prev, [quoteId]: true }));
+    try {
+      const response = await request.post({ entity: `quotes/approve/${quoteId}` });
+      if (response && response.success) {
+        message.success(response.message);
+        if (response.result.purchaseOrderCreated) {
+          message.info('A Purchase Order was generated due to inventory deficit.');
+        }
+        // Refresh customer list to update the isApproved states
+        await fetchCustomers();
+        // Option 2: Rather than full refresh, just update local state if preferred, 
+        // but fetchCustomers gets the latest DB state reliably.
+        setDetailModalOpen(false);
+      } else {
+        message.error(response?.message || 'Failed to approve quote');
+      }
+    } catch (err) {
+      message.error(err.message || 'Error occurred');
+    }
+    setApprovingQuotes((prev) => ({ ...prev, [quoteId]: false }));
   };
 
   // Get the price of a purchase item from the populated product
@@ -52,7 +76,8 @@ export default function Quote() {
   };
 
   const handleDownload = (customer, quoteId, items, totalPrice) => {
-    let content = `Quote ID: ${quoteId}\n`;
+    let isApproved = items.some(item => item.isApproved);
+    let content = `Quote ID: ${quoteId}${isApproved ? ' [APPROVED]' : ''}\n`;
     content += `Customer ID: ${customer.customerId}\n`;
     content += `Customer Name: ${customer.name}\n\n`;
     content += `Inquiry No.\tProduct\t\tQuantity\tPrice\n`;
@@ -124,14 +149,16 @@ export default function Quote() {
       quoteId,
       totalPrice: quoteGroups[quoteId].totalPrice,
       items: quoteGroups[quoteId].items,
+      isApproved: quoteGroups[quoteId].items.some(item => item.isApproved),
     }));
 
-  const collapseItems = quoteSummaryData.map(({ quoteId, totalPrice, items }) => ({
+  const collapseItems = quoteSummaryData.map(({ quoteId, totalPrice, items, isApproved }) => ({
     key: quoteId,
     label: (
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
         <span>
           <Tag color="blue">Quote ID: {quoteId}</Tag>
+          {isApproved && <Tag color="gold">APPROVED</Tag>}
           <Tag color="green">Total: ₹{totalPrice}</Tag>
           <Tag color="gray">{items.length} product(s)</Tag>
         </span>
@@ -209,6 +236,19 @@ export default function Quote() {
                   key: 'totalPrice',
                   render: (v) => `₹${v}`,
                 },
+                {
+                  title: 'Approval',
+                  key: 'approval',
+                  render: (_, record) => (
+                    <Checkbox
+                      checked={record.isApproved}
+                      disabled={record.isApproved || approvingQuotes[record.quoteId]}
+                      onChange={() => handleApproveQuote(record.quoteId)}
+                    >
+                      {record.isApproved ? 'Locked' : 'Approve'}
+                    </Checkbox>
+                  )
+                }
               ]}
             />
             <Collapse items={collapseItems} />

@@ -14,6 +14,8 @@ const InvoiceRead = lazy(() => import('@/pages/Invoice/InvoiceRead'));
 const InvoiceUpdate = lazy(() => import('@/pages/Invoice/InvoiceUpdate'));
 const InvoiceRecordPayment = lazy(() => import('@/pages/Invoice/InvoiceRecordPayment'));
 const Quote = lazy(() => import('@/pages/Quote/index'));
+const PurchaseOrder = lazy(() => import('@/pages/PurchaseOrder/index'));
+const SalesOrder = lazy(() => import('@/pages/SalesOrder/index'));
 const QuoteCreate = lazy(() => import('@/pages/Quote/QuoteCreate'));
 const QuoteRead = lazy(() => import('@/pages/Quote/QuoteRead'));
 const QuoteUpdate = lazy(() => import('@/pages/Quote/QuoteUpdate'));
@@ -78,6 +80,14 @@ let routes = {
     {
       path: '/quote',
       element: <Quote />,
+    },
+    {
+      path: '/purchase-order',
+      element: <PurchaseOrder />,
+    },
+    {
+      path: '/sales-order',
+      element: <SalesOrder />,
     },
     {
       path: '/quote/create',

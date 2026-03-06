@@ -37,6 +37,7 @@ const schema = new mongoose.Schema({
       quantity: { type: Number, default: 1 },
       inquiryNo: String,
       quoteId: String,
+      isApproved: { type: Boolean, default: false },
     },
   ],
   createdBy: { type: mongoose.Schema.ObjectId, ref: 'Admin' },

@@ -26,6 +26,8 @@ import {
   FilterOutlined,
   WalletOutlined,
   ReconciliationOutlined,
+  ShoppingCartOutlined,
+  CarOutlined,
 } from '@ant-design/icons';
 
 const { Sider } = Layout;
@@ -69,6 +71,16 @@ function Sidebar({ collapsible, isMobile = false }) {
       key: 'quote',
       icon: <FileSyncOutlined />,
       label: <Link to={'/quote'}>{translate('quote')}</Link>,
+    },
+    {
+      key: 'purchase_order',
+      icon: <ShoppingCartOutlined />,
+      label: <Link to={'/purchase-order'}>Purchase Order</Link>,
+    },
+    {
+      key: 'sales_order',
+      icon: <CarOutlined />,
+      label: <Link to={'/sales-order'}>Sales Order</Link>,
     },
     {
       key: 'payment',
