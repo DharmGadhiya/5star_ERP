@@ -1,105 +1,102 @@
-import dayjs from 'dayjs';
-import { Tag } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Table, Button, Space } from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
+import request from '@/request/request';
 import useLanguage from '@/locale/useLanguage';
-import { tagColor } from '@/utils/statusTagColor';
-
-import { useMoney, useDate } from '@/settings';
-import InvoiceDataTableModule from '@/modules/InvoiceModule/InvoiceDataTableModule';
+import dayjs from 'dayjs';
 
 export default function Invoice() {
   const translate = useLanguage();
-  const { dateFormat } = useDate();
-  const entity = 'invoice';
-  const { moneyFormatter } = useMoney();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const searchConfig = {
-    entity: 'client',
-    displayLabels: ['name'],
-    searchFields: 'name',
+  const fetchInvoices = async () => {
+    setLoading(true);
+    try {
+      const response = await request.get({ entity: 'app-invoices' });
+      if (response && response.success) {
+        setData(response.result);
+      }
+    } catch (error) {
+      console.error('Failed to fetch invoices', error);
+    }
+    setLoading(false);
   };
-  const deleteModalLabels = ['number', 'client.name'];
-  const dataTableColumns = [
+
+  useEffect(() => {
+    fetchInvoices();
+  }, []);
+
+  const handleDownload = (record) => {
+    let content = `=======================================================\n`;
+    content += `                    INVOICE RECEIPT                    \n`;
+    content += `=======================================================\n\n`;
+    content += `Invoice ID: ${record.invoiceId}\n`;
+    content += `Sales Order ID: ${record.salesId}\n`;
+    content += `Customer ID: ${record.customerId}\n`;
+    content += `Quote ID: ${record.quoteId}\n`;
+    content += `Created: ${dayjs(record.created).format('YYYY-MM-DD HH:mm')}\n\n`;
+
+    content += `-------------------------------------------------------\n`;
+    content += `Product Name\t\tQuantity\n`;
+    content += `-------------------------------------------------------\n`;
+
+    (record.products || []).forEach((item) => {
+      content += `${item.productName}\t\t${item.quantity}\n`;
+    });
+
+    content += `-------------------------------------------------------\n`;
+    content += `\nDelivery Time: ${record.deliveryTime} Days\n`;
+    content += `=======================================================\n`;
+
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Invoice_${record.invoiceId}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const columns = [
     {
-      title: translate('Number'),
-      dataIndex: 'number',
+      title: 'Invoice ID',
+      dataIndex: 'invoiceId',
+      key: 'invoiceId',
     },
     {
-      title: translate('Client'),
-      dataIndex: ['client', 'name'],
+      title: 'Sales Order ID',
+      dataIndex: 'salesId',
+      key: 'salesId',
     },
     {
-      title: translate('Date'),
-      dataIndex: 'date',
-      render: (date) => {
-        return dayjs(date).format(dateFormat);
-      },
-    },
-    {
-      title: translate('expired Date'),
-      dataIndex: 'expiredDate',
-      render: (date) => {
-        return dayjs(date).format(dateFormat);
-      },
-    },
-    {
-      title: translate('Total'),
-      dataIndex: 'total',
-      onCell: () => {
-        return {
-          style: {
-            textAlign: 'right',
-            whiteSpace: 'nowrap',
-            direction: 'ltr',
-          },
-        };
-      },
-      render: (total, record) => {
-        return moneyFormatter({ amount: total, currency_code: record.currency });
-      },
-    },
-    {
-      title: translate('paid'),
-      dataIndex: 'credit',
-      onCell: () => {
-        return {
-          style: {
-            textAlign: 'right',
-            whiteSpace: 'nowrap',
-            direction: 'ltr',
-          },
-        };
-      },
-      render: (total, record) => moneyFormatter({ amount: total, currency_code: record.currency }),
-    },
-    {
-      title: translate('Status'),
-      dataIndex: 'status',
-    },
-    {
-      title: translate('Payment'),
-      dataIndex: 'paymentStatus',
+      title: 'Actions',
+      key: 'action',
+      render: (_, record) => (
+        <Button
+          size="small"
+          icon={<DownloadOutlined />}
+          onClick={() => handleDownload(record)}
+        >
+          Download Invoice
+        </Button>
+      ),
     },
   ];
 
-  const Labels = {
-    PANEL_TITLE: translate('invoice'),
-    DATATABLE_TITLE: translate('invoice_list'),
-    ADD_NEW_ENTITY: translate('add_new_invoice'),
-    ENTITY_NAME: translate('invoice'),
+  return (
+    <div style={{ padding: '20px' }}>
+      <h2 style={{ marginBottom: 24 }}>Invoices</h2>
 
-    RECORD_ENTITY: translate('record_payment'),
-  };
-
-  const configPage = {
-    entity,
-    ...Labels,
-  };
-  const config = {
-    ...configPage,
-    dataTableColumns,
-    searchConfig,
-    deleteModalLabels,
-  };
-
-  return <InvoiceDataTableModule config={config} />;
+      <Table
+        dataSource={data}
+        columns={columns}
+        rowKey={(item) => item._id}
+        loading={loading}
+        bordered
+      />
+    </div>
+  );
 }

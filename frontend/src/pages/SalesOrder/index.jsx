@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Spin, Space, Button, Modal } from 'antd';
-import { EyeOutlined, DownloadOutlined } from '@ant-design/icons';
+import { EyeOutlined, DownloadOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { message } from 'antd';
 import request from '@/request/request';
 import useLanguage from '@/locale/useLanguage';
 import dayjs from 'dayjs';
@@ -29,6 +30,23 @@ export default function SalesOrder() {
     const showDetails = (record) => {
         setSelectedSO(record);
         setDetailModalOpen(true);
+    };
+
+    const handleProduce = async (record) => {
+        setLoading(true);
+        try {
+            const response = await request.post({ entity: `sales-orders/${record._id}/produce` });
+            if (response && response.success) {
+                message.success('Invoice generated! Materials have been subtracted from Inventory.');
+                fetchOrders();
+            } else {
+                message.error(response?.message || 'Failed to produce order');
+                setLoading(false);
+            }
+        } catch (err) {
+            message.error(err.message || 'An error occurred');
+            setLoading(false);
+        }
     };
 
     const handleDownload = (record) => {
@@ -100,6 +118,15 @@ export default function SalesOrder() {
                         onClick={() => handleDownload(record)}
                     >
                         Download
+                    </Button>
+                    <Button
+                        type="primary"
+                        size="small"
+                        icon={<CheckCircleOutlined />}
+                        onClick={() => handleProduce(record)}
+                        disabled={record.isProduced}
+                    >
+                        {record.isProduced ? 'Locked' : 'Produced'}
                     </Button>
                 </Space>
             ),

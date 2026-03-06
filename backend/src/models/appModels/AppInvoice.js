@@ -5,13 +5,13 @@ const schema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    isProduced: {
-        type: Boolean,
-        default: false,
+    invoiceId: {
+        type: Number,
+        unique: true,
     },
     salesId: {
         type: Number,
-        unique: true,
+        required: true,
     },
     quoteId: {
         type: String,
@@ -22,7 +22,7 @@ const schema = new mongoose.Schema({
         required: true,
     },
     deliveryTime: {
-        type: Number, // in days
+        type: Number,
         required: true,
     },
     products: [
@@ -35,10 +35,6 @@ const schema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    updated: {
-        type: Date,
-        default: Date.now,
-    },
 });
 
-module.exports = mongoose.model('SalesOrder', schema);
+module.exports = mongoose.model('AppInvoice', schema);
