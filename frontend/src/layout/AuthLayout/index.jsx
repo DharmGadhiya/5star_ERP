@@ -1,32 +1,42 @@
 import React from 'react';
 import { Layout, Row, Col } from 'antd';
 
-import { useSelector } from 'react-redux';
-import { Content } from 'antd/lib/layout/layout';
-
-export default function AuthLayout({ sideContent, children }) {
+export default function AuthLayout({ children }) {
   return (
-    <Layout>
-      <Row>
+    <Layout
+      style={{
+        minHeight: '100vh',
+        background: '#fafafa',
+      }}
+    >
+      <Row style={{ minHeight: '100vh', width: '100%' }}>
+        {/* Left Spacing/Background Section */}
+        <Col xs={0} sm={0} md={12} lg={12}></Col>
+
+        {/* Right Section containing the Form */}
         <Col
-          xs={{ span: 0, order: 2 }}
-          sm={{ span: 0, order: 2 }}
-          md={{ span: 11, order: 1 }}
-          lg={{ span: 12, order: 1 }}
+          xs={24}
+          sm={24}
+          md={12}
+          lg={12}
           style={{
-            minHeight: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
           }}
         >
-          {sideContent}
-        </Col>
-        <Col
-          xs={{ span: 24, order: 1 }}
-          sm={{ span: 24, order: 1 }}
-          md={{ span: 13, order: 2 }}
-          lg={{ span: 12, order: 2 }}
-          style={{ background: '#FFF', minHeight: '100vh' }}
-        >
-          {children}
+          <div
+            style={{
+              background: '#FFF',
+              width: '100%',
+              maxWidth: '500px',
+              borderRadius: '8px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+            }}
+          >
+            {children}
+          </div>
         </Col>
       </Row>
     </Layout>
