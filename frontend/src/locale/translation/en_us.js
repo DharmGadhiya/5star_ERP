@@ -451,6 +451,7 @@ const lang = {
   proforma_invoices: 'quote',
   search: 'search',
   product_master: 'Product Master',
+  inventory: 'Inventory',
 };
 
 export default lang;

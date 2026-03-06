@@ -25,6 +25,7 @@ const Settings = lazy(() => import('@/pages/Settings/Settings'));
 const PaymentMode = lazy(() => import('@/pages/PaymentMode'));
 const Taxes = lazy(() => import('@/pages/Taxes'));
 const ProductMaster = lazy(() => import('@/pages/ProductMaster'));
+const Inventory = lazy(() => import('@/pages/Inventory'));
 
 const Profile = lazy(() => import('@/pages/Profile'));
 
@@ -122,6 +123,10 @@ let routes = {
     {
       path: '/product',
       element: <ProductMaster />,
+    },
+    {
+      path: '/inventory',
+      element: <Inventory />,
     },
 
     {
