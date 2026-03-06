@@ -172,7 +172,7 @@ function Sidebar({ collapsible, isMobile = false }) {
           // borderRadius: '8px',
         }),
       }}
-      theme={'light'}
+      theme={'dark'}
     >
       <div
         className="logo"
@@ -181,12 +181,12 @@ function Sidebar({ collapsible, isMobile = false }) {
           cursor: 'pointer',
         }}
       >
-        <img src={logoIcon} alt="Logo" style={{ marginLeft: '-5px', height: '55px' }} />
+        <img src={logoIcon} alt="Logo" style={{ marginLeft: '-5px', height: '60px' }} />
       </div>
       <Menu
         items={items}
         mode="inline"
-        theme={'light'}
+        theme={'dark'}
         selectedKeys={[currentPath]}
         style={{
           width: 256,

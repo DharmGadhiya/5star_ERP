@@ -34,8 +34,25 @@ export default function VehicleSalesGraph({ data = [] }) {
     const options = {
         responsive: true,
         plugins: {
-            legend: { position: "top" },
-            title: { display: true, text: "Vehicle Sales Analysis (By Product Volume)" }
+            legend: {
+                position: "top",
+                labels: { color: "#e0e0e0" }
+            },
+            title: {
+                display: true,
+                text: "Vehicle Sales Analysis (By Product Volume)",
+                color: "#F2B680"
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: "#e0e0e0" },
+                grid: { color: "#333333" }
+            },
+            y: {
+                ticks: { color: "#e0e0e0" },
+                grid: { color: "#333333" }
+            }
         }
     };
 

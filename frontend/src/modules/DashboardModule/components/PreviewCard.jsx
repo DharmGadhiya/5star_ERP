@@ -74,7 +74,7 @@ const defaultInvoiceStatistics = [
 const PreviewState = ({ tag, value }) => {
   const translate = useLanguage();
   return (
-    <div style={{ color: '#595959', marginBottom: 5 }}>
+    <div style={{ color: '#e0e0e0', marginBottom: 5 }}>
       <div className="left alignLeft capitalize">{translate(tag)}</div>
       <div className="right alignRight">{value} %</div>
       <Progress
@@ -130,7 +130,7 @@ export default function PreviewCard({
       <div className="pad20">
         <h3
           style={{
-            color: '#22075e',
+            color: '#f0ae77',
             fontSize: 'large',
             marginBottom: 40,
             marginTop: 0,

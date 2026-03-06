@@ -28,13 +28,26 @@ export default function InventoryGraph({ data = [] }) {
         indexAxis: "y",
         responsive: true,
         plugins: {
+            legend: {
+                labels: { color: "#e0e0e0" }
+            },
             title: {
                 display: true,
-                text: "Inventory & Spare Parts Stock (Available Material Quantity)"
+                text: "Inventory & Spare Parts Stock (Available Material Quantity)",
+                color: "#F2B680"
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: "#e0e0e0" },
+                grid: { color: "#333333" }
+            },
+            y: {
+                ticks: { color: "#e0e0e0" },
+                grid: { color: "#333333" }
             }
         }
     };
-
     return (
         <Card bordered={false} style={{ borderRadius: 12, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
             <Bar data={chartData} options={options} />

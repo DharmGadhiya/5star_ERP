@@ -57,71 +57,80 @@ export default function DashboardModule() {
     {
       title: 'Total Customers',
       value: data.totalCustomers,
-      icon: <UserOutlined style={{ color: '#1890ff', fontSize: 24 }} />,
-      color: '#e6f7ff',
+      icon: <UserOutlined style={{ color: '#60a5fa', fontSize: 24 }} />,
+      borderColor: 'rgba(96, 165, 250, 0.3)',
+      iconBg: 'rgba(96, 165, 250, 0.1)',
       showFor: ['owner', 'admin', 'product']
     },
     {
       title: 'Total Products',
       value: data.totalProducts,
-      icon: <ShopOutlined style={{ color: '#52c41a', fontSize: 24 }} />,
-      color: '#f6ffed',
+      icon: <ShopOutlined style={{ color: '#4ade80', fontSize: 24 }} />,
+      borderColor: 'rgba(74, 222, 128, 0.3)',
+      iconBg: 'rgba(74, 222, 128, 0.1)',
       showFor: ['owner', 'admin', 'product']
     },
     {
       title: 'Total Raw Materials',
       value: data.totalRawMaterials,
-      icon: <CodeSandboxOutlined style={{ color: '#faad14', fontSize: 24 }} />,
-      color: '#fffbe6',
+      icon: <CodeSandboxOutlined style={{ color: '#f0ae77', fontSize: 24 }} />,
+      borderColor: 'rgba(240, 174, 119, 0.3)',
+      iconBg: 'rgba(240, 174, 119, 0.1)',
       showFor: ['owner', 'admin', 'product']
     },
     {
       title: 'Total Sales Orders',
       value: data.totalSalesOrders,
-      icon: <ShoppingCartOutlined style={{ color: '#722ed1', fontSize: 24 }} />,
-      color: '#f9f0ff',
+      icon: <ShoppingCartOutlined style={{ color: '#c084fc', fontSize: 24 }} />,
+      borderColor: 'rgba(192, 132, 252, 0.3)',
+      iconBg: 'rgba(192, 132, 252, 0.1)',
       showFor: ['owner', 'admin', 'product']
     },
     {
       title: 'Total Purchase Products',
       value: data.totalPurchaseOrders,
-      icon: <ShopOutlined style={{ color: '#eb2f96', fontSize: 24 }} />,
-      color: '#fff0f6',
+      icon: <ShopOutlined style={{ color: '#f472b6', fontSize: 24 }} />,
+      borderColor: 'rgba(244, 114, 182, 0.3)',
+      iconBg: 'rgba(244, 114, 182, 0.1)',
       showFor: ['owner', 'admin', 'product']
     },
     {
       title: 'Total Invoices',
       value: data.totalInvoices,
-      icon: <FileTextOutlined style={{ color: '#13c2c2', fontSize: 24 }} />,
-      color: '#e6fffb',
+      icon: <FileTextOutlined style={{ color: '#2dd4bf', fontSize: 24 }} />,
+      borderColor: 'rgba(45, 212, 191, 0.3)',
+      iconBg: 'rgba(45, 212, 191, 0.1)',
       showFor: ['owner', 'admin', 'product']
     },
     {
       title: 'Total Revenue',
       value: `₹${data.totalRevenue.toLocaleString()}`,
-      icon: <RiseOutlined style={{ color: '#52c41a', fontSize: 24 }} />,
-      color: '#f6ffed',
+      icon: <RiseOutlined style={{ color: '#4ade80', fontSize: 24 }} />,
+      borderColor: 'rgba(74, 222, 128, 0.3)',
+      iconBg: 'rgba(74, 222, 128, 0.1)',
       showFor: ['owner', 'admin', 'finance']
     },
     {
       title: 'Total Expenses',
       value: `₹${data.totalExpenses.toLocaleString()}`,
-      icon: <FallOutlined style={{ color: '#ff4d4f', fontSize: 24 }} />,
-      color: '#fff2f0',
+      icon: <FallOutlined style={{ color: '#f87171', fontSize: 24 }} />,
+      borderColor: 'rgba(248, 113, 113, 0.3)',
+      iconBg: 'rgba(248, 113, 113, 0.1)',
       showFor: ['owner', 'admin', 'finance']
     },
     {
       title: 'Total Profit',
       value: `₹${data.totalProfit.toLocaleString()}`,
-      icon: <AccountBookOutlined style={{ color: '#1890ff', fontSize: 24 }} />,
-      color: '#e6f7ff',
+      icon: <AccountBookOutlined style={{ color: '#f0ae77', fontSize: 24 }} />,
+      borderColor: 'rgba(240, 174, 119, 0.3)',
+      iconBg: 'rgba(240, 174, 119, 0.1)',
       showFor: ['owner', 'admin', 'finance']
     }
   ];
 
   return (
     <div style={{ padding: 24 }}>
-      <h2 style={{ marginBottom: 24 }}>System Dashboard</h2>
+      <h2 style={{ marginBottom: 24, color: '#ffffff' }}>System Dashboard</h2>
       <Spin spinning={loading} size="large">
         <Row gutter={[24, 24]}>
           {metricCards.map((card, index) => {
@@ -133,15 +142,18 @@ export default function DashboardModule() {
                   bordered={false}
                   style={{
                     borderRadius: 12,
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-                    backgroundColor: card.color
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                    border: `1px solid ${card.borderColor}`,
+                    transition: 'all 0.3s ease',
                   }}
+                  hoverable
                 >
                   <Statistic
-                    title={<span style={{ fontWeight: 600, fontSize: 16 }}>{card.title}</span>}
+                    title={<span style={{ fontWeight: 600, fontSize: 16, color: 'rgba(255,255,255,0.65)' }}>{card.title}</span>}
                     value={card.value}
                     prefix={card.icon}
-                    valueStyle={{ fontWeight: 'bold', marginTop: 8 }}
+                    valueStyle={{ fontWeight: 'bold', marginTop: 8, color: '#ffffff' }}
                   />
                 </Card>
               </Col>
@@ -151,7 +163,7 @@ export default function DashboardModule() {
 
         {['owner', 'admin', 'finance'].includes(role) && (
           <div style={{ marginTop: 40 }}>
-            <h3 style={{ marginBottom: 24 }}>Analytics & Reports</h3>
+            <h3 style={{ marginBottom: 24, color: '#f0ae77' }}>Analytics & Reports</h3>
             <Row gutter={[24, 24]}>
               <Col xs={24} md={12}>
                 <VehicleSalesGraph data={data.chartData.vehicleSales} />

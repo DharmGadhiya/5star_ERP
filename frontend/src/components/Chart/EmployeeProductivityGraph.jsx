@@ -30,15 +30,19 @@ export default function EmployeeProductivityGraph({ data = [] }) {
     const options = {
         responsive: true,
         plugins: {
+            legend: {
+                labels: { color: "#e0e0e0" }
+            },
             title: {
                 display: true,
-                text: "Employee Workforce Distribution"
+                text: "Employee Workforce Distribution",
+                color: "#F2B680"
             }
         }
     };
 
     return (
-        <Card bordered={false} style={{ borderRadius: 12, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+        <Card bordered={false} style={{ borderRadius: 12, boxShadow: '0 4px 12px rgba(68, 67, 67, 0.05)' }}>
             <Pie data={chartData} options={options} />
         </Card>
     );

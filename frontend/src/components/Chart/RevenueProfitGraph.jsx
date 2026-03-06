@@ -35,9 +35,23 @@ export default function RevenueProfitGraph({ data = [] }) {
     const options = {
         responsive: true,
         plugins: {
+            legend: {
+                labels: { color: "#e0e0e0" }
+            },
             title: {
                 display: true,
-                text: "Revenue vs Profit Analysis (Monthly Trend)"
+                text: "Revenue vs Profit Analysis (Monthly Trend)",
+                color: "#F2B680"
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: "#e0e0e0" },
+                grid: { color: "#333333" }
+            },
+            y: {
+                ticks: { color: "#e0e0e0" },
+                grid: { color: "#333333" }
             }
         }
     };

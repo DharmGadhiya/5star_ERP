@@ -29,9 +29,9 @@ export default function HeaderContent() {
           className="last"
           src={currentAdmin?.photo ? FILE_BASE_URL + currentAdmin?.photo : personPic}
           style={{
-            color: '#f56a00',
-            backgroundColor: currentAdmin?.photo ? 'none' : '#fde3cf',
-            boxShadow: 'rgba(150, 190, 238, 0.35) 0px 0px 6px 1px',
+            color: '#f0ae77',
+            backgroundColor: currentAdmin?.photo ? 'none' : 'rgba(240, 174, 119, 0.15)',
+            boxShadow: 'rgba(240, 174, 119, 0.3) 0px 0px 6px 1px',
           }}
         >
           {currentAdmin?.name ? currentAdmin.name.charAt(0).toUpperCase() : ''}
@@ -88,7 +88,8 @@ export default function HeaderContent() {
     <Header
       style={{
         padding: '20px',
-        background: '#ffffff',
+        background: '#0a0a0a',
+        borderBottom: '1px solid rgba(240, 174, 119, 0.08)',
         display: 'flex',
         flexDirection: 'row-reverse',
         justifyContent: 'flex-start',
@@ -108,9 +109,9 @@ export default function HeaderContent() {
           className="last"
           src={currentAdmin?.photo ? FILE_BASE_URL + currentAdmin?.photo : personPic}
           style={{
-            color: '#f56a00',
-            backgroundColor: currentAdmin?.photo ? 'none' : '#fde3cf',
-            boxShadow: 'rgba(150, 190, 238, 0.35) 0px 0px 10px 2px',
+            color: '#f0ae77',
+            backgroundColor: currentAdmin?.photo ? 'none' : 'rgba(240, 174, 119, 0.15)',
+            boxShadow: 'rgba(240, 174, 119, 0.3) 0px 0px 10px 2px',
             float: 'right',
             cursor: 'pointer',
           }}
