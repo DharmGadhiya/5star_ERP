@@ -5,6 +5,7 @@ import { message } from 'antd';
 import request from '@/request/request';
 import useLanguage from '@/locale/useLanguage';
 import dayjs from 'dayjs';
+import { generatePDF } from '@/utils/pdfGenerator';
 
 export default function SalesOrder() {
     const translate = useLanguage();
@@ -49,28 +50,38 @@ export default function SalesOrder() {
         }
     };
 
-    const handleDownload = (record) => {
-        let content = `Sales Order ID: ${record.salesId}\n`;
-        content += `Customer ID: ${record.customerId}\n`;
-        content += `Quote ID: ${record.quoteId}\n`;
-        content += `Created: ${dayjs(record.created).format('YYYY-MM-DD HH:mm')}\n\n`;
-        content += `Product Name\t\tQuantity\n`;
-        content += `-------------------------------------------------------\n`;
-        record.products.forEach((item) => {
-            content += `${item.productName}\t\t${item.quantity}\n`;
-        });
-        content += `-------------------------------------------------------\n`;
-        content += `\nDelivery Time: ${record.deliveryTime} Days\n`;
+    const handleDownload = async (record) => {
+        // Fetch settings to get company logo
+        let settings = {};
+        try {
+            const settingsStr = window.localStorage.getItem('settings');
+            if (settingsStr) {
+                const parsed = JSON.parse(settingsStr);
+                const appSettings = parsed['company_settings'] || {};
+                settings.company_logo = appSettings.company_logo;
+                settings.company_name = appSettings.company_name;
+            }
+        } catch (err) {
+            console.error('Failed to fetch settings for PDF', err);
+        }
 
-        const blob = new Blob([content], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `SalesOrder_${record.salesId}.txt`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        const pdfData = {
+            id: record.salesId,
+            customerId: record.customerId,
+            quoteId: record.quoteId,
+            createdDate: dayjs(record.created).format('YYYY-MM-DD HH:mm'),
+            deliveryTime: `${record.deliveryTime} Days`
+        };
+
+        const columns = ['Product Name', 'Quantity'];
+        const rows = record.products.map((item) => {
+            return [
+                item.productName,
+                item.quantity
+            ];
+        });
+
+        await generatePDF('SalesOrder', pdfData, columns, rows, settings);
     };
 
     const columns = [

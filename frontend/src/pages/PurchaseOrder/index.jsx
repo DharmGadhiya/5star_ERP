@@ -4,6 +4,7 @@ import { CheckCircleOutlined, HistoryOutlined, EyeOutlined, DownloadOutlined } f
 import request from '@/request/request';
 import useLanguage from '@/locale/useLanguage';
 import dayjs from 'dayjs';
+import { generatePDF } from '@/utils/pdfGenerator';
 
 export default function PurchaseOrder() {
     const translate = useLanguage();
@@ -50,29 +51,41 @@ export default function PurchaseOrder() {
         setDetailModalOpen(true);
     };
 
-    const handleDownload = (record) => {
-        let content = `Purchase Order ID: ${record.purchaseId}\n`;
-        content += `Quote ID: ${record.quoteId}\n`;
-        content += `Status: ${record.status}\n`;
-        content += `Created: ${dayjs(record.created).format('YYYY-MM-DD HH:mm')}\n\n`;
-        content += `Material\t\tQuantity\tUnit Price\tTotal Price\n`;
-        content += `-------------------------------------------------------\n`;
-        record.items.forEach((item) => {
-            const matName = item.material.charAt(0).toUpperCase() + item.material.slice(1);
-            content += `${matName}\t\t${item.quantity}\t\t${item.price}\t\t${item.totalPrice}\n`;
-        });
-        content += `-------------------------------------------------------\n`;
-        content += `\nGrand Total: ₹${record.grandTotal}\n`;
+    const handleDownload = async (record) => {
+        // Fetch settings from local storage
+        let settings = {};
+        try {
+            const settingsStr = window.localStorage.getItem('settings');
+            if (settingsStr) {
+                const parsed = JSON.parse(settingsStr);
+                const appSettings = parsed['company_settings'] || {};
+                settings.company_logo = appSettings.company_logo;
+                settings.company_name = appSettings.company_name;
+            }
+        } catch (err) {
+            console.error('Failed to fetch settings for PDF', err);
+        }
 
-        const blob = new Blob([content], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `PurchaseOrder_${record.purchaseId}.txt`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        const pdfData = {
+            id: record.purchaseId,
+            quoteId: record.quoteId,
+            status: record.status,
+            createdDate: dayjs(record.created).format('YYYY-MM-DD HH:mm'),
+            grandTotal: record.grandTotal
+        };
+
+        const columns = ['Material', 'Quantity', 'Unit Price', 'Total Price'];
+        const rows = record.items.map((item) => {
+            const matName = item.material.charAt(0).toUpperCase() + item.material.slice(1);
+            return [
+                matName,
+                item.quantity,
+                `Rs. ${item.price}`,
+                `Rs. ${item.totalPrice}`
+            ];
+        });
+
+        await generatePDF('PurchaseOrder', pdfData, columns, rows, settings);
     };
 
     const columns = [

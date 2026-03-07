@@ -3,6 +3,7 @@ import { Table, Button, Spin, Modal, Collapse, Tag, Checkbox, message } from 'an
 import { EyeOutlined, DownloadOutlined } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
 import request from '@/request/request';
+import { generatePDF } from '@/utils/pdfGenerator';
 
 export default function Quote() {
   const translate = useLanguage();
@@ -75,29 +76,44 @@ export default function Quote() {
     return groups;
   };
 
-  const handleDownload = (customer, quoteId, items, totalPrice) => {
+  const handleDownload = async (customer, quoteId, items, totalPrice) => {
     let isApproved = items.some(item => item.isApproved);
-    let content = `Quote ID: ${quoteId}${isApproved ? ' [APPROVED]' : ''}\n`;
-    content += `Customer ID: ${customer.customerId}\n`;
-    content += `Customer Name: ${customer.name}\n\n`;
-    content += `Inquiry No.\tProduct\t\tQuantity\tPrice\n`;
-    content += `-------------------------------------------------------\n`;
-    items.forEach((item) => {
-      const price = getItemPrice(item);
-      content += `${item.inquiryNo}\t${item.productName || 'N/A'}\t\t${item.quantity}\t\t${price}\n`;
-    });
-    content += `-------------------------------------------------------\n`;
-    content += `\nTotal Price: ${totalPrice}\n`;
 
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `Quote_${quoteId}.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    // Fetch settings to get company logo securely from local storage
+    let settings = {};
+    try {
+      const settingsStr = window.localStorage.getItem('settings');
+      if (settingsStr) {
+        const parsed = JSON.parse(settingsStr);
+        const appSettings = parsed['company_settings'] || {};
+        settings.company_logo = appSettings.company_logo;
+        settings.company_name = appSettings.company_name;
+      }
+    } catch (err) {
+      console.error('Failed to parse settings for PDF', err);
+    }
+
+    const pdfData = {
+      id: quoteId,
+      customerId: customer.customerId,
+      customerName: customer.name,
+      status: isApproved ? 'Approved' : 'Pending',
+      totalPrice: totalPrice,
+    };
+
+    const columns = ['Inquiry No.', 'Product Name', 'Quantity', 'Unit Price', 'Line Total'];
+    const rows = items.map(item => {
+      const price = getItemPrice(item);
+      return [
+        item.inquiryNo,
+        item.productName || 'N/A',
+        item.quantity,
+        `Rs. ${price}`,
+        `Rs. ${price * (item.quantity || 0)}`
+      ];
+    });
+
+    await generatePDF('Quote', pdfData, columns, rows, settings);
   };
 
   const columns = [

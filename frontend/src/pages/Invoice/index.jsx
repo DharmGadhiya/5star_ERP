@@ -4,6 +4,7 @@ import { DownloadOutlined } from '@ant-design/icons';
 import request from '@/request/request';
 import useLanguage from '@/locale/useLanguage';
 import dayjs from 'dayjs';
+import { generatePDF } from '@/utils/pdfGenerator';
 
 export default function Invoice() {
   const translate = useLanguage();
@@ -27,43 +28,47 @@ export default function Invoice() {
     fetchInvoices();
   }, []);
 
-  const handleDownload = (record) => {
-    let content = `=======================================================\n`;
-    content += `                    INVOICE RECEIPT                    \n`;
-    content += `=======================================================\n\n`;
-    content += `Invoice ID: ${record.invoiceId}\n`;
-    content += `Sales Order ID: ${record.salesId}\n`;
-    content += `Customer ID: ${record.customerId}\n`;
-    content += `Quote ID: ${record.quoteId}\n`;
-    content += `Created: ${dayjs(record.created).format('YYYY-MM-DD HH:mm')}\n\n`;
-
-    content += `-------------------------------------------------------\n`;
-    content += `Product Name\t\tPrice\t\tQuantity\tTotal\n`;
-    content += `-------------------------------------------------------\n`;
+  const handleDownload = async (record) => {
+    // Fetch settings to get company logo
+    let settings = {};
+    try {
+      const settingsStr = window.localStorage.getItem('settings');
+      if (settingsStr) {
+        const parsed = JSON.parse(settingsStr);
+        const appSettings = parsed['company_settings'] || {};
+        settings.company_logo = appSettings.company_logo;
+        settings.company_name = appSettings.company_name;
+      }
+    } catch (err) {
+      console.error('Failed to fetch settings for PDF', err);
+    }
 
     let fallbackGrandTotal = 0;
-    (record.products || []).forEach((item) => {
+    const rows = (record.products || []).map((item) => {
       const price = item.price || 0;
       const total = item.total || (price * item.quantity);
       fallbackGrandTotal += total;
-      content += `${item.productName}\t\t₹${price}\t\t${item.quantity}\t\t₹${total}\n`;
+      return [
+        item.productName,
+        `Rs. ${price}`,
+        item.quantity,
+        `Rs. ${total}`
+      ];
     });
 
-    content += `-------------------------------------------------------\n`;
-    content += `Grand Total:\t\t\t\t\t₹${record.grandTotal || fallbackGrandTotal}\n`;
-    content += `-------------------------------------------------------\n`;
-    content += `\nDelivery Time: ${record.deliveryTime} Days\n`;
-    content += `=======================================================\n`;
+    const pdfData = {
+      id: record.invoiceId,
+      salesOrderId: record.salesId,
+      customerId: record.customerId,
+      quoteId: record.quoteId,
+      createdDate: dayjs(record.created).format('YYYY-MM-DD HH:mm'),
+      deliveryTime: `${record.deliveryTime} Days`,
+      grandTotal: record.grandTotal || fallbackGrandTotal
+    };
 
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `Invoice_${record.invoiceId}.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    const columns = ['Product Name', 'Price', 'Quantity', 'Total'];
+
+    await generatePDF('Invoice', pdfData, columns, rows, settings);
   };
 
   const columns = [
