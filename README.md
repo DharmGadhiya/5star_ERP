@@ -2,6 +2,8 @@
 
 📌 Project Overview
 
+Deployed Link: https://5star-erp.vercel.app/
+
 The **5-STAR ERP System** is a simplified Enterprise Resource Planning (ERP) web application designed to demonstrate the workflow of a manufacturing company.
 
 The system simulates how different departments collaborate to process a **customer order from inquiry to dispatch and financial settlement**.
