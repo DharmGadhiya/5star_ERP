@@ -10,6 +10,8 @@ let responsiveConfig = {
   lg: 992,
   xl: 1200,
 };
+
+
 function handleResize() {
   const oldInfo = info;
   calculate();
